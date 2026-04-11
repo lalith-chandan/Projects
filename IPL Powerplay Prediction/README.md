@@ -1,8 +1,5 @@
 # IPL Powerplay Prediction
 
-**Course**: EE3111 — Statistics for Electrical Engineers  
-**Semester**: Jan–May 2026
-
 ## Problem
 
 Predict the total runs scored by the batting team at the end of 6 overs (Powerplay) in an IPL T20 match, given only the ball-by-ball data from the first 3 overs and match metadata.
@@ -33,28 +30,29 @@ Y = 1.817·x₁ + 1.100·x₂ - 1.858·x₃ + 1.063·e^(-x₄) + 1.292·x₅ + 6
 
 The `experiments.ipynb` notebook documents every experiment in detail:
 
-1. **Data selection**: Why 2020+ (not 2008+) — validated that older data increases RMSE
+1. **Data selection**: Why 2020+ (not 2008+) -> validated that older data increases RMSE
 2. **Scatter plot analysis**: Identified linear trends for runs/dots/boundaries, exponential decay for wickets
 3. **Per-team vs pooled model**: Per-team models overfit (coefficient instability with ~35 matches each). Pooled model wins.
 4. **Extras as separate feature**: Splitting batting runs and extras improved RMSE by ~0.9
-5. **Wicket transformation**: Compared e^(-x), 2^(-x), and linear — all identical within 0.001. Kept e^(-x) for theoretical justification.
+5. **Wicket transformation**: Compared e^(-x), 2^(-x), and linear -> all identical within 0.001. Kept e^(-x) for theoretical justification.
 6. **Momentum indicator**: Linear slope of runs across overs 1-2-3. Tiny improvement (~0.04), rejected for complexity.
 7. **Wicket timing**: Recency-weighted wicket score. Hypothesis confirmed in data but hurt regression RMSE.
-8. **Venue/stadium weight**: Historical venue averages. Increased RMSE — training venue stats don't predict test conditions.
-9. **Team-specific intercepts**: One-hot team biases. Hurt RMSE — rosters change between seasons.
+8. **Venue/stadium weight**: Historical venue averages. Increased RMSE -> training venue stats don't predict test conditions.
+9. **Team-specific intercepts**: Teams were given certain weights based on their average IPL scores. This affected the RMSE in a negative way.
 10. **Pairwise combinations**: All combos of momentum + wicket timing + venue tested. None helped.
-11. **Time-weighted OLS**: 6 different weighting schemes. Best (gentle) matched unweighted on test data. Rejected for simplicity.
-12. **Log-linear model**: exp(c + w·x) — worse RMSE because prediction errors are additive, not multiplicative.
-13. **Feature ablation**: All 31 feature combinations tested. runs_excl_extras is dominant; just runs+extras gets 9.21.
-14. **Baseline comparisons**: 2× runs at 3 overs gives RMSE 12.00; bias-corrected 11.11. Our model: 9.08.
-
+11. **Time-weighted OLS**: 6 different weighting schemes. The model that worked the best on the Test Data is the unweighted model.
+12. **Log-linear model**: exp(c + w·x) — worse RMSE probably because prediction errors are additive, not multiplicative.
+13. **Feature ablation**: All 31 feature combinations tested. runs_excl_extras is dominant, runs_excl_extras+extras gets 9.21.
+14. **Baseline comparisons**: 2× runs at 3 overs gives RMSE 12.00, unbiased 2x runs at 3 overs gives RMSE 11.11,  Our model gives RMSE 9.08.
+15. **Hypothesis Testing**: Every coeffecient in the final model were tested to see if their respective feature contributed towards the run rate. The p-value for the wickets term and intercept were around 0.48 and 0.2 which suggests that we failed to reject the Null hypothesis. The Null hypothesis in this case assumes that the coeffecient is 0 and the alternate hypothesis assumes the coeffecient is not zero.
 ## Repository Structure
 
 ```
 ├── README.md                  # This file
 ├── main.py                    # Final submission file (predict function)
-├── experiments.ipynb           # Complete experiment notebook with all code and reasoning
-├── EE3111_Project_Report.pdf  # Formal PDF report (16 pages)
+├── experiments.ipynb          # Complete experiment notebook with all code and reasoning
+├── hypothesis testing.ipynb    #Shows the process where I performed a hypothesis test on every coeffecient 
+├── IPL Powerplay Prediction.pdf  # Formal PDF report 
 ├── data/
 │   └── ipl_features.csv       # Pre-extracted feature dataset (419 matches, 2020-2026)
 └── plots/
