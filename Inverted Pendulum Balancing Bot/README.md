@@ -1,4 +1,4 @@
-# Inverted Pendulum Balancer (PID + MPU6050)
+# Inverted Pendulum Balancer
 
 A directly-actuated inverted pendulum mounted on a cart. An MPU6050 IMU rides on
 the pendulum and measures its tilt from vertical. A DC motor at the pendulum's
