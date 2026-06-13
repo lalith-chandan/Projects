@@ -19,9 +19,9 @@ The short version: on this kind of **tabular, PCA-anonymised, highly imbalanced*
 | Recall | 0.77 | **0.84** |
 | False alarms | 15 | 17 |
 
-![Precision–Recall and ROC curves on the test set](images/test_pr_roc_curves.png)
+![Precision–Recall and ROC curves on the test set](test_pr_roc_curves.png)
 
-![Confusion matrices on the test set](images/test_confusion_matrices.png)
+![Confusion matrices on the test set](test_confusion_matrices.png)
 
 The two models are basically tied on ROC-AUC (~0.97–0.98) — which is exactly the trap with imbalanced data. **PR-AUC tells the real story, and there XGBoost wins comfortably (0.87 vs 0.75)** while catching more frauds at comparable precision.
 
@@ -38,10 +38,10 @@ The well-known **ULB Credit Card Fraud Detection** dataset (European cardholders
   - `Amount` — the transaction amount.
 - **`Class`** — the label: `1` = fraud, `0` = legitimate.
 
-> **The raw `creditcard.csv` is not included** (it's ~100 MB). Download it from Kaggle and drop it in the project root:
+> **The raw `creditcard.csv` is not included** (it's ~100 MB). One can download it from Kaggle and drop it in the project root:
 > https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
 >
-> The pre-split, pre-scaled data is provided under `data/` if you'd rather skip the preprocessing.
+> The pre-split, pre-scaled data is provided under (trained scaled, val scaled, test scaled).
 
 ---
 
@@ -81,7 +81,7 @@ The well-known **ULB Credit Card Fraud Detection** dataset (European cardholders
 
 **Explore.** A correlation check confirms the `V` features are essentially uncorrelated with one another — a direct consequence of PCA producing orthogonal components. Only `Time` and `Amount` show meaningful correlations.
 
-![Correlation heatmap](images/correlation_heatmap.png)
+![Correlation heatmap](correlation_heatmap.png)
 
 **Neural network.** Keras Tuner is used to sanity-check the architecture (number of layers and units); small, shallow networks do as well as anything, so the final model is a single hidden layer:
 
@@ -91,11 +91,11 @@ Input(30) → Dense(48, relu) → Dense(1, sigmoid)
 
 Trained with `Adam(1e-3)`, **class weights** (~290× on fraud), early stopping and LR reduction on validation PR-AUC.
 
-![Neural-net training curves](images/nn_training_curves.png)
+![Neural-net training curves](nn_training_curves.png)
 
 **XGBoost.** Gradient-boosted trees with **`scale_pos_weight ≈ 578`** for the imbalance and early stopping on validation PR-AUC. It leans on a handful of PCA components — **V14, V12, V17, V10** — the same ones that stood out in EDA.
 
-![XGBoost feature importance](images/xgb_feature_importance.png)
+![XGBoost feature importance](xgb_feature_importance.png)
 
 **Compare.** Both models are scored once on the test set, each at the threshold it chose on validation.
 
