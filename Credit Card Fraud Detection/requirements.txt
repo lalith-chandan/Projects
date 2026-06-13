@@ -1,0 +1,19 @@
+# Tested with Python 3.10
+numpy==2.2.6
+pandas==2.3.3
+scikit-learn==1.7.2
+matplotlib==3.10.9
+seaborn==0.13.2
+
+# Tree ensemble
+xgboost==3.2.0
+
+# Neural network + architecture search
+# (tensorflow-cpu is used here; swap for `tensorflow` if you want GPU support)
+tensorflow-cpu==2.21.0
+keras-tuner==1.4.8
+tensorboard==2.20.0
+
+# Notebook
+jupyter
+notebook

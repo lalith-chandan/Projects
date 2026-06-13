@@ -1,0 +1,21 @@
+# Dataset — download from Kaggle (too large for GitHub, ~100 MB)
+# https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+creditcard.csv
+
+# Keras Tuner search state (regenerated when you run the search)
+kt_dir/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
